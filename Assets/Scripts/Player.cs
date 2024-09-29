@@ -1,49 +1,49 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Player  : MonoBehaviour
 {
-    public int numberOfPlayer;
-    CharacterController characterController;
-    public Color playerColor;
     public float speed = 5f;
-    float moveX, moveZ;
-    public Material material;
-    private MeshRenderer[] meshes;
-
-    // Gravidade
+    private Vector2 moveInput;
+    private CharacterController characterController;
+    private PlayerInput playerInput;
+    private float velocityY = 0f; // Gravidade
     public float gravity = -9.81f;
-    private float velocityY = 0f; // Velocidade vertical
-
-    // Checar se está no chão
     private bool isGrounded;
 
-    //Animation
-    Animator anim;
-    bool isWalk;
+    public int numberOfPlayer;
 
-    // Rotation
-    public float rotationSpeed = 5f;
+    public Color[] playersColors;
+
+    // Animação
+    private Animator anim;
 
     void Start()
     {
-        meshes = GetComponentsInChildren<MeshRenderer>();
-        meshes.ToList().ForEach(meshe => meshe.material.color = playerColor);
-        anim = GetComponent<Animator>();
+
         characterController = GetComponent<CharacterController>();
+        playerInput = GetComponent<PlayerInput>();
+        anim = GetComponent<Animator>();
+
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        numberOfPlayer = players.Length;
+
+        Debug.Log($"Jogador {numberOfPlayer} entrou.");
+        MeshRenderer[] meshes = GetComponentsInChildren<MeshRenderer>();
+        for(int i = 0; i < players.Length; i++)
+        {
+            meshes.ToList().ForEach(meshe => meshe.material.color = playersColors[i]);
+        }
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        moveX = Input.GetAxisRaw($"Horizontal {numberOfPlayer}");
-        moveZ = Input.GetAxisRaw($"Vertical {numberOfPlayer}");
+        // Aplica o movimento com base na entrada
+        Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
 
-        Vector3 movement = new Vector3(moveX, 0, moveZ).normalized;
-
-        // Checar se o jogador está no chão (usando o CharacterController)
+        // Checar se o jogador está no chão
         isGrounded = characterController.isGrounded;
 
         if (isGrounded && velocityY < 0)
@@ -51,37 +51,37 @@ public class Player : MonoBehaviour
             velocityY = 0f; // Reseta a velocidade vertical quando no chão
         }
 
-        // Aplicar movimento
-        Vector3 move = movement * speed;
-
-        // Aplicar gravidade
+        // Aplica gravidade
         velocityY += gravity * Time.deltaTime;
-        move.y = velocityY;
+        movement.y = velocityY;
 
-        characterController.Move(move * Time.deltaTime);
+        // Aplica o movimento com a velocidade do jogador
+        characterController.Move(movement * speed * Time.deltaTime);
 
-        // Definir se o personagem está andando
-        isWalk = moveX != 0 || moveZ != 0;
+        // Define a animação de andar
+        bool isWalk = movement.x != 0 || movement.z != 0;
         anim.SetBool("isWalk", isWalk);
 
-        // Rotação suave
-        if (movement != Vector3.zero) // Se houver movimento
+        // Rotação suave em direção ao movimento
+        if (movement.x != 0 || movement.z != 0)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(movement); // Rotação para a direção do movimento
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed); // Rotação suave
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(movement.x, 0, movement.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 8f);
         }
     }
 
-    void Update()
+    // Método chamado pelo novo Input System para movimentação
+    public void OnMove(InputAction.CallbackContext context)
     {
-        TestarComandosSeparados();
+        moveInput = context.ReadValue<Vector2>(); // Armazena o input de movimento como um Vector2
     }
 
-    void TestarComandosSeparados()
+    // Método chamado pelo novo Input System para pulo
+    public void OnJump(InputAction.CallbackContext context)
     {
-        if (Input.GetButton($"Jump {numberOfPlayer}"))
+        if (context.performed && isGrounded)
         {
-            if (transform.localScale == new Vector3(1, 1, 1))
+            if(transform.localScale == new Vector3(1,1,1))
             {
                 StartCoroutine(Crescer());
             }

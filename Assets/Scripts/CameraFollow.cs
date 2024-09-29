@@ -8,26 +8,31 @@ public class CameraFollow : MonoBehaviour
     public float lerpSpeed, zDistance;
     Vector3 pointToFollow;
     GameObject[] players;
-    void Start()
-    {   
-        
-        
-        
-    }
-
-    // Update is called once per frame
     void FixedUpdate()
     {
-
         players = GameObject.FindGameObjectsWithTag("Player");
-        if(players.Length == 2)
+        if(players.Length > 1)
         {
-            pointToFollow = (players[0].transform.position + players[1].transform.position) / 2;
+            pointToFollow = Vector3.zero;
+            Vector3 _point = Vector3.zero;
+            for(int i = 0; i < players.Length; i++)
+            {
+                _point += players[i].transform.position;
+            }
+            pointToFollow = _point / players.Length;
         }
         else
         {
-            player = GameObject.FindGameObjectWithTag("Player");
-            pointToFollow = player.transform.position;
+            try
+            {
+                player = GameObject.FindGameObjectWithTag("Player");
+                pointToFollow = player.transform.position;
+            }
+            catch
+            {
+                return;
+            }
+            
         }
 
 
