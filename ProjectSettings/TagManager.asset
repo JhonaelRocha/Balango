@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Spawn
   - GalinhaSpot
+  - Espada
   layers:
   - Default
   - TransparentFX

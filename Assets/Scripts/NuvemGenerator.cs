@@ -26,7 +26,7 @@ public class NuvemGenerator : MonoBehaviour
 
     void Gerar()
     {
-        Vector3 localSpawn = new Vector3(transform.position.x, transform.position.y, Random.Range(minZ, maxZ));
+        Vector3 localSpawn = new Vector3(transform.position.x, transform.position.y, Random.Range(transform.position.z + minZ, transform.position.z + maxZ));
         GameObject _nuvem = Instantiate(nuvens[Random.Range(0,nuvens.Length)],localSpawn, Quaternion.identity);
         _nuvem.GetComponent<Nuvem>().speed = Random.Range(minNuvemSpeed, maxNuvemSpeed);
         _nuvem.GetComponent<Nuvem>().lifeTime = nuvensLifeTime;

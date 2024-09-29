@@ -32,15 +32,15 @@ public class Player  : MonoBehaviour
 
         Debug.Log($"Jogador {numberOfPlayer} entrou.");
         MeshRenderer[] meshes = GetComponentsInChildren<MeshRenderer>();
+        
         for(int i = 0; i < players.Length; i++)
         {
-            meshes.ToList().ForEach(meshe => meshe.material.color = playersColors[i]);
+            meshes.ToList().Where(meshe => meshe.gameObject.tag != "Espada").ToList().ForEach( meshe => meshe.material.color = playersColors[i]);
         }
     }
 
     void FixedUpdate()
     {
-        // Aplica o movimento com base na entrada
         Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
 
         // Checar se o jogador está no chão

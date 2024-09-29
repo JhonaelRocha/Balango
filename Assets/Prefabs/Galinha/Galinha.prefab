@@ -138,8 +138,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1123687006508187783}
   - component: {fileID: 4254667149894632451}
-  - component: {fileID: 4865628825014889306}
   - component: {fileID: 4068698058334634087}
+  - component: {fileID: 1839544238856718545}
+  - component: {fileID: 2080777840932618472}
   m_Layer: 0
   m_Name: Galinha
   m_TagString: Untagged
@@ -186,8 +187,46 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!143 &4865628825014889306
-CharacterController:
+--- !u!114 &4068698058334634087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7034666731634739524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7166113c33675b40843432f3eaf9d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  minTimeToWalk: 0.5
+  maxTimeToWalk: 1
+  walkRadius: 10
+--- !u!195 &1839544238856718545
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7034666731634739524}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.31
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 1200
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1.12
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!136 &2080777840932618472
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -204,32 +243,11 @@ CharacterController:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 1.1
-  m_Radius: 0.25
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.6, z: 0.05}
---- !u!114 &4068698058334634087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7034666731634739524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7166113c33675b40843432f3eaf9d3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0.03
-  minTimeToWalk: 0.5
-  maxTimeToWalk: 3
-  isWalk: 0
-  canWalk: 1
-  isInSpot: 1
+  serializedVersion: 2
+  m_Radius: 0.3136034
+  m_Height: 1.1087313
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5591898, z: 0}
 --- !u!1 &8514531186162167726
 GameObject:
   m_ObjectHideFlags: 0
